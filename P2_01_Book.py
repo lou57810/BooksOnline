@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 
 dataBook = {}
+dict_arr = [dataBook]
 url = 'http://books.toscrape.com/catalogue/the-coming-woman-a-novel-based-on-the-life-of-the-infamous-feminist-victoria-woodhull_993/index.html'
 
 urlPage = requests.get(url)
@@ -18,11 +19,11 @@ dataBook['universal_product_code'] = upc
     
 titre = soup.find('div', {'class': 'col-sm-6 product_main'}).find('h1')
 dataBook['title'] = titre.text    
-        
+# price_ttc
 price_ttc = tds[3].text
 price_ttc = price_ttc[1:len(price_ttc)]
 dataBook['price_including_tax'] = price_ttc
-    
+# price_ht
 price_ht = tds[2].text
 price_ht = price_ht[1:len(price_ht)]
 dataBook['price_excluding_tax'] = price_ht    
@@ -41,19 +42,16 @@ dataBook['category'] = category
 reviewRating = tds[6].text
 dataBook['review_rating'] = reviewRating    
     
-img_url = soup.find('div',{'id': 'product_gallery'}).find('img')
-img_url = str(img_url)
-img_url = img_url[51:len(img_url)]
-img_url = img_url[:len(img_url)-3]
-link = 'http://books.toscrape.com/'
+ # images    
+img_url = soup.find('div',{'id': 'product_gallery'}).find("div", class_='item active').img["src"]    
+img_url = img_url[5:]    
+link = 'http://books.toscrape.com'
 img_url = link + img_url
 dataBook['image_url'] = img_url
-
-dict_arr = [dataBook]
 labels = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 'price_excluding_tax', 'number_available', 'prod_description', 'category', 'review_rating', 'image_url']
 
 try:
-    with open('dataBook.csv', 'w') as f:
+    with open('dataBook.csv', 'w', encoding = "utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=labels)
         writer.writeheader()
         for elem in dict_arr:
