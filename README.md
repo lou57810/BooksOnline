@@ -1,21 +1,12 @@
 # BooksOnline
-P2_01_LivreAuHasard.py	Premier script demandé: Affiche les données d'un livre au hasard.
-P2_02_allBooksOfOneCategory.py Deuxieme script: Affiche les données livres d'une catégorie au hasard.
-P2_03_tousLesLivresClasseParCat.py Troisième script: Affiche les données livres de chaques catégories,
-et enregistrées séparément dans des fichiers .csv de 1 à 50.
-
-WARNING!
-Pour le dernier script, afin de séparer les résultats, j'ai trouvé plus commode de créer
-un dossier img à l'intérieur du dossier acceuillant les scripts, pour séparer les 1000 images
-à télécharger, lors de l'execution de l'application 'tousLesLivresClasséParCat.py'.
-
-ex: $ mkdir dossierScripts
-    $ cd dossierScripts (Il contiendra les scripts)
-    $ mkdir img
-    $ python tousLesLivresClasséParCat.py	
+P2_01_Book.py	Premier script demandé: Affiche les données d'un livre au hasard.
+P2_02_CategoryBook.py Deuxieme script: Affiche les données livres d'une catégorie au hasard.
+P2_03_AllBooks.py : Affiche les données livres de chaques catégories,
+et enregistrées séparément dans des fichiers .csv avec le nom de la catégorie dans un dossier listeParCat
+et les images dans un dossier img, dossiers qui seront créés lors de l'exécution du script.
 
 Pour réussir à developper et executer ces applications en langage python,
-il est nécessaire de créer un environnement propre:
+il est nécessaire de créer un environnement vierge:
 1. Création d'un dossier acceuillant les scripts.
 2. Dans ce dossier, on crée cet environnement à l'aide de la commande:
 	$ python -m venv env
