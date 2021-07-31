@@ -21,4 +21,4 @@ il est nécessaire de créer un environnement vierge:
  modules requis pour les applications présentes dans l'environnement, avec la 
  commande: $ pip install -r requirements.txt
 
-Les scripts peuvent alors s'executer normalement.
+Les scripts peuvent alors s'executer normalement en utilisant la commande python "P2_0.....py".
