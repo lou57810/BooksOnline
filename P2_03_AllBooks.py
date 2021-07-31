@@ -5,24 +5,41 @@ import urllib.request
 from urllib.parse import urljoin
 from csv import DictWriter
 import time
-import shutil # to save images locally
+import shutil
+import io 
+import os   # for creation 'img' directory
 
 
 dataBook = {}
 dict_arr = [dataBook]
 listeUrlImg = []
 
-# Fontion téléchargement image-----------------------------------------------------------
+try:
+   os.mkdir('img')
+except:
+    print("fail to create img directory")
+print("img created")
+
+try:
+   os.mkdir('listeParCat')
+except:
+    print("fail to create listeParCat directory")
+print("listeParCat created")
+
+
+
+# Fonction -------------------------------------------------------------------------------
 def imgDownload(URL):
     image = URL.rsplit('/', 1)[1]    
     urllib.request.urlretrieve(URL, 'img/' + image)
     #sleep(1)
 # End -----------------------------------------------------------------------------------
 
-# Fontion clés valeurs-------------------------------------------------------------------
+# Fonction -------------------------------------------------------------------------------
 def dataLivre(url, dataBook):    
     urlPage = requests.get(url)
     soup = BeautifulSoup(urlPage.text, 'html.parser')
+    
     # url
     dataBook['product_page_url'] = url
     # -----------------------------------------------------
@@ -62,7 +79,7 @@ def dataLivre(url, dataBook):
     img_url = img_url[5:]    
     link = 'http://books.toscrape.com'
     img_url = link + img_url    
-   
+    
     dataBook['image_url'] = img_url
     
 # End ---------------------------------------------------------------------------------
@@ -74,10 +91,8 @@ response = requests.get(urlIndex)
 
 if response.ok:
     soup = BeautifulSoup(response.text, 'html.parser')
-    match3 = soup.find('ul', class_='nav nav-list')
-    #match4 = match3.findAll('li')
-           
-    #for li in match4:
+    match3 = soup.find('ul', class_='nav nav-list')           
+    
     tdi = match3.findAll('li')
     i = 1
     # 50 livres - pageRéf(book)
@@ -104,19 +119,29 @@ def listeLivresParCat(url, listeUrlLivres):
         
 # End ---------------------------------------------------------------------------------
 
-# main récupération des pages de chaques catégories------------------------------------
+# main --------------------------------------------------------------------------------
 
 k = 1
 
 for urlCategory in listeCategory:
-    #print(urlCategory)    
-    radical = 'livreCat'
+    #print(urlCategory)
+    if k < 9:    
+        categoryName = urlCategory[51:-13]
+    else:
+        categoryName = urlCategory[51: -14]
+    print(categoryName)
+    #radical = 'listeParCat/livresCat'
+    radical = 'listeParCat/'
+    cat = str(categoryName)
     ext = '.csv'
-    titre = radical + str(k) + ext    
+    #titre = radical + str(k) + ext
+    titre = radical + cat + ext
     
+    #print(titre)
     labels = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 'price_excluding_tax', 'number_available', 'prod_description', 'category', 'review_rating', 'image_url']
+    
     try:
-        with open(titre, 'w') as f:
+        with open(titre, 'w', encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=labels)
             writer.writeheader()                                
     except IOError:
@@ -130,8 +155,7 @@ for urlCategory in listeCategory:
     
     # Récupération du nombre de livres
     nbrLivres = (soup.find('form').find('strong')).text
-    nbrLivres = int(nbrLivres)
-    #print('Nombre de livres par catégories: ', nbrLivres)
+    nbrLivres = int(nbrLivres)    
         
     nbrPage = 0    
     if ((nbrLivres%20)>0):
@@ -149,13 +173,13 @@ for urlCategory in listeCategory:
         while i <= nbrPage:
             linkPage = 'page-' + str(i) + '.html'
             url = url_base + linkPage
-            #listePagesCategories.append(url)            
-                                                                            # pour chaques pages il y a au moins 20 url images
+                        
+                                                                            
             listeLivresParCat(url, listeUrlLivres)                          # append la totalité des livres de chaque page de la catégorie            
             i += 1
             
             
-# Ecriture des fichiers csv par catégories, et téléchargement images         
+         
           
     for elt in listeUrlLivres:        
         dataLivre(elt, dataBook) 
@@ -163,7 +187,7 @@ for urlCategory in listeCategory:
         imgDownload(URL)
         dict_arr = [dataBook]
         try:
-            with open(titre, 'a', encoding="utf-8") as f:           
+            with open(titre, 'a', encoding='utf-8') as f:           
                 for elem in dict_arr:                    
                     writer = csv.DictWriter(f, fieldnames=labels)
                     writer.writerow(elem)
