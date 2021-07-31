@@ -1,6 +1,8 @@
 # BooksOnline
 P2_01_Book.py	Premier script demandé: Affiche les données d'un livre au hasard.
+
 P2_02_CategoryBook.py Deuxieme script: Affiche les données livres d'une catégorie au hasard.
+
 P2_03_AllBooks.py : Affiche les données livres de chaques catégories,
 et enregistrées séparément dans des fichiers .csv avec le nom de la catégorie dans un dossier listeParCat
 et les images dans un dossier img, dossiers qui seront créés lors de l'exécution du script.
