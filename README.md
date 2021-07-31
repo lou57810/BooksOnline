@@ -1,4 +1,6 @@
 # BooksOnline
+# Prés requis: installation Python.
+
 P2_01_Book.py	Premier script demandé: Affiche les données d'un livre au hasard.
 
 P2_02_CategoryBook.py Deuxieme script: Affiche les données livres d'une catégorie au hasard.
